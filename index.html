@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>File Explorer</title>
+    <meta name="author" content="abhishekverma">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style type="text/css">
+        @charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\:form{display:block;}
+        body {
+            margin: 10px;
+        }
+        .dirText {
+            margin: 20px;
+            cursor: pointer;
+        }
+        .empty-jumbo {
+            color: #80808075;
+            text-align: center;
+        }
+    </style>
+</head>
+<body ng-app="FileExplorerApp" ng-controller="fileExplorerCtrl as fe">
+    <div class="container ng-cloak">
+        <div class="row">
+            <p>You are at {{fe.dirUIDS.tracePath}}</p>
+            <div class="col-md-12">
+                <div ng-if="fe.dirUIDS.dirIdArr.length">
+                    <p>Directories</p>
+                    <div class="dirText" ng-click="fe.changeDir(fe.dirUIDS.content[dir])" ng-repeat="dir in fe.dirUIDS.dirIdArr track by $index">
+                        <p>{{fe.dirUIDS.content[dir].name}}</p>
+                    </div>
+                </div>
+                <div class="jumbotron empty-jumbo" ng-if="!fe.dirUIDS.dirIdArr.length">
+                    <h3 class="display-4">Oops, you don't have any folder yet.</h3>
+                </div>
+                <button class="btn btn-primary" data-toggle="modal" data-target="#folderName">New Folder</button>
+                <button class="btn btn-secondary" ng-click="fe.goBack()" ng-hide="fe.dirUIDS.tracePath === '/'">Go Back</button>
+            </div>
+        </div>
+    </div>
+    <div id="folderName" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" ng-click="fe.closeModal()" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="name" ng-model="fe.dirName" ng-change="fe.onNameInputChange()" placeholder="Name of the folder">
+                        </div>
+                        <p class="alert alert-light" ng-if="fe.dirUIDS.showModalError">Name already exists, please enter a different name</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" ng-click="fe.closeModal()">Close</button>
+                    <button type="button" ng-click="fe.createDir()" class="btn btn-primary" ng-disabled="!fe.dirName || fe.dirUIDS.showModalError">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.20/angular.min.js"></script>
+    <script src="./assets/app.js"></script>
+</body>
+
+</html>
